@@ -1,0 +1,66 @@
+get_cost <- function(W, Y, X) {
+  cost <- norm(x = (X %*% matrix(t(W)) - Y) ^ 2, type = "2")
+  return(cost)
+}
+
+get_gradient <- function(W, Y, X) {
+  gradient <- t(X) %*% X %*% W - t(X) %*% Y
+  return(gradient)
+}
+
+# Descent step
+stepwise_descent <- function(W, Y, X, learning_rate) {
+  gradient <- get_gradient(W, Y, X)
+  subtrahend <-  learning_rate * gradient
+  W <- W - subtrahend
+  return(W)
+}
+
+# Looping stepwise_descent
+gradient_descent <- function(W, Y, X, learning_rate, no_of_steps) { # cost_grad_record: A detailed history of costs, weights, and gradients at each step of gradient descent
+  
+  ### Code required just for record-keeping, not for gradient descent!
+  cost_grad_table <- data.frame(matrix(ncol = 4, nrow = 0))
+  colnames(cost_grad_table) <- c("Step_No", "Cost", "Weights", "Gradient")
+  ###
+  
+  i <- 1
+  for (i in 1: no_of_steps) {
+    
+    ### Code required just for record-keeping, not for gradient descent!
+    cost <- get_cost(W, Y, X)
+    gradient <- get_gradient(W, Y, X)
+    cost_grad_record <- cbind(i, cost, W, gradient)
+    colnames(cost_grad_record) <- c("Step_No", "Cost", "Weights", "Gradient")
+    cost_grad_table <- rbind(cost_grad_table, cost_grad_record)
+    ###
+    
+    W <- stepwise_descent(W, Y, X, learning_rate)
+  }
+  
+  ### Code required just for record-keeping, not for gradient descent!
+  final_cost <- get_cost(W, Y, X)
+  final_gradient <- get_gradient(W, Y, X)
+  final_cost_grad_record <- cbind(i + 1, final_cost, W, final_gradient)
+  colnames(final_cost_grad_record) <- c("Step_No", "Cost", "Weights", "Gradient")
+  cost_grad_table <- rbind(cost_grad_table, final_cost_grad_record)
+  ### 
+  
+  weights_and_record <- list(W, cost_grad_table)
+  names(weights_and_record) <- c("Final_Weights", "Record")
+  
+  return(weights_and_record)
+}
+
+# DESIGN:
+# Input (3 x 3 matrix) 
+#   x                     -> output (3 x 1 vector)
+# weights (3 x 1 vector)
+
+input <- matrix(c(3:11), nrow = 3, byrow = FALSE)
+output <- c(1, 0, 0)
+weights <- c(0, 0, 0)
+
+weights_and_record <- gradient_descent(weights, output, input, learning_rate =  0.003, no_of_steps = 1000)
+final_weights <- weights_and_record$Final_Weights
+print(weights_and_record)
