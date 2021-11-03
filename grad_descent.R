@@ -57,10 +57,10 @@ gradient_descent <- function(W, Y, X, learning_rate, no_of_steps) { # cost_grad_
 #   x                     -> output (3 x 1 vector)
 # weights (3 x 1 vector)
 
-input <- matrix(c(3:11), nrow = 3, byrow = FALSE)
+input <- matrix(rnorm(3 * 3, mean = 0, sd = 1), 3, 3)
 output <- c(1, 0, 0)
-weights <- c(0, 0, 0)
+weights <- matrix(rnorm(3, mean = 0, sd = 1), 3, 1)
 
-weights_and_record <- gradient_descent(weights, output, input, learning_rate =  0.003, no_of_steps = 1000)
+weights_and_record <- gradient_descent(weights, output, input, learning_rate =  0.01, no_of_steps = 500)
 final_weights <- weights_and_record$Final_Weights
 print(weights_and_record)
