@@ -1,3 +1,5 @@
+library(ggplot2)
+
 get_cost <- function(W, Y, X) {
   cost <- norm(x = (X %*% matrix(t(W)) - Y) ^ 2, type = "2")
   return(cost)
@@ -64,4 +66,10 @@ weights <- matrix(rnorm(3, mean = 0, sd = 1), 3, 1)
 weights_and_record <- gradient_descent(weights, output, input, learning_rate =  0.01, no_of_steps = 500)
 final_weights <- weights_and_record$Final_Weights
 print(weights_and_record)
+
+record <- weights_and_record$Record
+
+ggplot(record, aes(x = Step_No, y = Cost)) +
+  geom_line(color="#69b3a2", size=2, alpha=0.9, linetype=2) +
+  ggtitle("Evolution of something")
 
