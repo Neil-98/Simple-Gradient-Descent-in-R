@@ -71,5 +71,5 @@ record <- weights_and_record$Record
 
 ggplot(record, aes(x = Step_No, y = Cost)) +
   geom_line(color="#69b3a2", size=2, alpha=0.9, linetype=2) +
-  ggtitle("Evolution of something")
+  ggtitle("Cost vs Time")
 
